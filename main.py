@@ -3,9 +3,12 @@ from kivy.uix.widget import Widget
 from kivy.clock import Clock
 from kivy.graphics import Rectangle, Color
 from random import randint
+from kivy.graphics.instructions import Canvas
 
+class NBackGrid(Widget):
+    pass
 
-class Grid(Widget):
+class NBackGame(Widget):
     def __init__(self):
         super().__init__()
         self.sqsize = 200
@@ -28,13 +31,10 @@ class Grid(Widget):
                     grid[row][col] = Rectangle(pos=(row*self.sqsize*1.1+10, col*1.1*self.sqsize + 10),
                                                size=(self.sqsize, self.sqsize))
 
-class MainApp(MDApp):
+class NBackApp(MDApp):
     def build(self):
-        grid = Grid()
-        Clock.schedule_interval(grid.update_grid, 1)
-        return grid
+        #grid = NBackGame()
+        #Clock.schedule_interval(grid.update_grid, 1)
+        return NBackGame() #grid
 
-
-
-app = MainApp()
-app.run()
+NBackApp().run()

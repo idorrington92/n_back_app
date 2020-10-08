@@ -6,12 +6,12 @@ I will try to make an android app of the N-back test, with options for single, d
 To Do:
 make main page
 	title
-	buttons linking to 3 types of n-back
-	button to about page
-	button to high scores
+	buttons linking to 3 types of n-back - DONE
+	button to about page - DONE
+	button to high scores - DONE
 make game
-	make grid
-	clock which makes tiles light up
+	make grid - DONE
+	clock which makes tiles light up - DONE
 	buttons for matching tile/sound/colour
 	title saying value of N
 	Pop up with score

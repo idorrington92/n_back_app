@@ -1,0 +1,23 @@
+<NBackGrid>:
+    canvas:
+        Rectangle:
+            id: 11
+            pos: self.size[0]/6 - 10, 0 #Subtract half the size to center the line
+            size: self.size[0]/3, self.size[0]/3
+        Rectangle:
+            id: 12
+            pos: self.center_x + self.size[0]/6, 0 #Subtract half the size to center the line
+            size: self.size[0]/3, self.size[0]/3
+
+
+<NBackGame>:
+    canvas:
+        Color:
+            rgba: app.theme_cls.primary_color
+    NBackGrid:
+        size: root.size
+
+
+
+
+
