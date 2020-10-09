@@ -1,21 +1,60 @@
-<NBackGrid>:
+<NBackTile>:
     canvas:
-        Rectangle:
-            id: 11
-            pos: self.size[0]/6 - 10, 0 #Subtract half the size to center the line
-            size: self.size[0]/3, self.size[0]/3
-        Rectangle:
-            id: 12
-            pos: self.center_x + self.size[0]/6, 0 #Subtract half the size to center the line
-            size: self.size[0]/3, self.size[0]/3
+        Color:
+            rgb: app.theme_cls.primary_color if self.state == 'dark' else app.theme_cls.primary_light
+        Rectangle: # center
+            pos: self.pos
+            size: self.size
 
 
 <NBackGame>:
-    canvas:
-        Color:
-            rgba: app.theme_cls.primary_color
-    NBackGrid:
-        size: root.size
+    FloatLayout:
+        Button:
+            pos: root.center_x, root.size[1]/10
+            text: "Position"
+            on_release:
+                app.printIDs()
+
+    NBackTile:
+        id: centertile
+        center: self.parent.center_x, self.parent.center_y #Subtract half the size to center the line
+        size: self.parent.size[0]/4, self.parent.size[0]/4
+    NBackTile:
+        id: centerl
+        center: centertile.center_x - centertile.size[0] - 10, centertile.center_y
+        size: centertile.size
+    NBackTile:
+        id: centerr
+        center: centertile.center_x + centertile.size[0] + 10, centertile.center_y
+        size: centertile.size
+
+    NBackTile:
+        id: lowerr
+        center: centertile.center_x + centertile.size[0] + 10, centertile.center_y - centertile.size[1] - 10
+        size: centertile.size
+    NBackTile:
+        id: lowerm
+        center: centertile.center_x, centertile.center_y - centertile.size[1] - 10
+        size: centertile.size
+    NBackTile:
+        id: lowerl
+        center: centertile.center_x - centertile.size[0] - 10, centertile.center_y - centertile.size[1] - 10
+        size: centertile.size
+
+    NBackTile:
+        id: upperr
+        center: centertile.center_x + centertile.size[0] + 10, centertile.center_y + centertile.size[1] + 10
+        size: centertile.size
+    NBackTile:
+        id: upperm
+        center: centertile.center_x, centertile.center_y + centertile.size[1] + 10
+        size: centertile.size
+    NBackTile:
+        id: upperl
+        center: centertile.center_x - centertile.size[0] - 10, centertile.center_y + centertile.size[1] + 10
+        size: centertile.size
+
+
 
 
 
