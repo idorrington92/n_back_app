@@ -1,58 +1,71 @@
 <NBackTile>:
-    canvas:
+    animated_color: 0,0,0,0
+    opacity: 0.5
+    canvas.before:
         Color:
-            rgb: app.theme_cls.primary_color if self.state == 'dark' else app.theme_cls.primary_light
-        Rectangle: # center
+            rgba: self.animated_color
+        RoundedRectangle: # center
             pos: self.pos
             size: self.size
-
 
 <NBackGame>:
     FloatLayout:
         Button:
-            pos: root.center_x, root.size[1]/10
+            pos: lowerl.pos[0], lowerl.pos[1] - lowerl.size[1] / 2 - 10
+            size: root.size[0]/4, root.size[0]/8
+            size_hint: None, None
             text: "Position"
             on_release:
                 app.printIDs()
 
     NBackTile:
         id: centertile
+        animated_color: app.theme_cls.primary_dark
         center: self.parent.center_x, self.parent.center_y #Subtract half the size to center the line
         size: self.parent.size[0]/4, self.parent.size[0]/4
     NBackTile:
         id: centerl
-        center: centertile.center_x - centertile.size[0] - 10, centertile.center_y
+        animated_color: app.theme_cls.primary_dark
+        center: centertile.center_x - centertile.size[0] - 20, centertile.center_y
         size: centertile.size
     NBackTile:
         id: centerr
-        center: centertile.center_x + centertile.size[0] + 10, centertile.center_y
+        animated_color: app.theme_cls.primary_dark
+        center: centertile.center_x + centertile.size[0] + 20, centertile.center_y
         size: centertile.size
 
     NBackTile:
         id: lowerr
-        center: centertile.center_x + centertile.size[0] + 10, centertile.center_y - centertile.size[1] - 10
+        animated_color: app.theme_cls.primary_dark
+        center: centertile.center_x + centertile.size[0] + 20, centertile.center_y - centertile.size[1] - 20
         size: centertile.size
     NBackTile:
         id: lowerm
-        center: centertile.center_x, centertile.center_y - centertile.size[1] - 10
+        animated_color: app.theme_cls.primary_dark
+        center: centertile.center_x, centertile.center_y - centertile.size[1] - 20
         size: centertile.size
     NBackTile:
         id: lowerl
-        center: centertile.center_x - centertile.size[0] - 10, centertile.center_y - centertile.size[1] - 10
+        animated_color: app.theme_cls.primary_dark
+        center: centertile.center_x - centertile.size[0] - 20, centertile.center_y - centertile.size[1] - 20
         size: centertile.size
 
     NBackTile:
         id: upperr
-        center: centertile.center_x + centertile.size[0] + 10, centertile.center_y + centertile.size[1] + 10
+        animated_color: app.theme_cls.primary_dark
+        center: centertile.center_x + centertile.size[0] + 20, centertile.center_y + centertile.size[1] + 20
         size: centertile.size
     NBackTile:
         id: upperm
-        center: centertile.center_x, centertile.center_y + centertile.size[1] + 10
+        animated_color: app.theme_cls.primary_dark
+        center: centertile.center_x, centertile.center_y + centertile.size[1] + 20
         size: centertile.size
     NBackTile:
         id: upperl
-        center: centertile.center_x - centertile.size[0] - 10, centertile.center_y + centertile.size[1] + 10
+        animated_color: app.theme_cls.primary_dark
+        center: centertile.center_x - centertile.size[0] - 20, centertile.center_y + centertile.size[1] + 20
         size: centertile.size
+
 
 
 
