@@ -17,17 +17,39 @@
             pos: self.pos
             size: self.size
 
+<GameButton>:
+    text: ""
+    size: 0, 0
+    center: 0, 0
+    size_hint: None, None
+    MDFillRoundFlatButton:
+        md_bg_color: app.theme_cls.primary_color
+        opacity: 0.5
+        text: self.parent.text
+        center: self.parent.center
+        size: self.parent.size
+        on_release:
+            app.printIDs()
+
 <NBackGame>:
     FloatLayout:
-        MDFillRoundFlatButton:
-            md_bg_color: app.theme_cls.primary_color
-            opacity: 0.5
+        Label:
+            text: "Score: 100"
+            center: upperr.center[0], upperr.pos[1] + upperr.size[1]*1.2
+            color: app.theme_cls.primary_color
+            size_hint: 1, 1
+
+        GameButton:
+            text: "Position"
             center: lowerl.center[0], lowerl.pos[1] /2
             size: centertile.size[0], centertile.size[1]/2
-            size_hint: None, None
-            text: "Position"
-            on_release:
-                app.printIDs()
+
+
+        GameButton:
+            text: "Sound"
+            center: lowerr.center[0], lowerr.pos[1] /2
+            size: centertile.size[0], centertile.size[1]/2
+
     GridLine:
         center: (centertile.center[0] + centerl.center[0])/2, centertile.center[1]
         size: 1, centertile.size[1]*3.5
@@ -48,49 +70,49 @@
     NBackTile:
         id: centertile
         animated_color: app.theme_cls.primary_dark
-        center: self.parent.center_x, self.parent.center_y + 20 #Subtract half the size to center the line
+        center: self.parent.center_x, self.parent.center_y + self.parent.size[1]*0.1
         size: self.parent.size[0]/4, self.parent.size[0]/4
     NBackTile:
         id: centerl
         animated_color: app.theme_cls.primary_dark
-        center: centertile.center_x - centertile.size[0] - 20, centertile.center_y
+        center: centertile.center_x - centertile.size[0] - self.parent.size[1]*0.03, centertile.center_y
         size: centertile.size
     NBackTile:
         id: centerr
         animated_color: app.theme_cls.primary_dark
-        center: centertile.center_x + centertile.size[0] + 20, centertile.center_y
+        center: centertile.center_x + centertile.size[0] + self.parent.size[1]*0.03, centertile.center_y
         size: centertile.size
 
     NBackTile:
         id: lowerr
         animated_color: app.theme_cls.primary_dark
-        center: centertile.center_x + centertile.size[0] + 20, centertile.center_y - centertile.size[1] - 20
+        center: centertile.center_x + centertile.size[0] + self.parent.size[1]*0.03, centertile.center_y - centertile.size[1] - self.parent.size[1]*0.03
         size: centertile.size
     NBackTile:
         id: lowerm
         animated_color: app.theme_cls.primary_dark
-        center: centertile.center_x, centertile.center_y - centertile.size[1] - 20
+        center: centertile.center_x, centertile.center_y - centertile.size[1] - self.parent.size[1]*0.03
         size: centertile.size
     NBackTile:
         id: lowerl
         animated_color: app.theme_cls.primary_dark
-        center: centertile.center_x - centertile.size[0] - 20, centertile.center_y - centertile.size[1] - 20
+        center: centertile.center_x - centertile.size[0] - self.parent.size[1]*0.03, centertile.center_y - centertile.size[1] - self.parent.size[1]*0.03
         size: centertile.size
 
     NBackTile:
         id: upperr
         animated_color: app.theme_cls.primary_dark
-        center: centertile.center_x + centertile.size[0] + 20, centertile.center_y + centertile.size[1] + 20
+        center: centertile.center_x + centertile.size[0] + self.parent.size[1]*0.03, centertile.center_y + centertile.size[1] + self.parent.size[1]*0.03
         size: centertile.size
     NBackTile:
         id: upperm
         animated_color: app.theme_cls.primary_dark
-        center: centertile.center_x, centertile.center_y + centertile.size[1] + 20
+        center: centertile.center_x, centertile.center_y + centertile.size[1] + self.parent.size[1]*0.03
         size: centertile.size
     NBackTile:
         id: upperl
         animated_color: app.theme_cls.primary_dark
-        center: centertile.center_x - centertile.size[0] - 20, centertile.center_y + centertile.size[1] + 20
+        center: centertile.center_x - centertile.size[0] - self.parent.size[1]*0.03, centertile.center_y + centertile.size[1] + self.parent.size[1]*0.03
         size: centertile.size
 
 

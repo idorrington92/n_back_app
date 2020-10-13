@@ -8,12 +8,16 @@ from kivy.animation import Animation
 from kivy.core.window import Window
 Window.size = (275, 600)
 
+class GameButton(Widget):
+    def __init__(self, **kwargs):
+        super(GameButton, self).__init__(**kwargs)
+
 class NBackTile(Widget):
     def __init__(self, **kwargs):
         super(NBackTile, self).__init__(**kwargs)
 
     def highlight_tile(self):
-        anim = Animation(animated_color=MDApp.get_running_app().theme_cls.primary_light, opacity=1., duration=.5)
+        anim = Animation(animated_color=MDApp.get_running_app().theme_cls.primary_light, opacity=0.75, duration=.5)
         anim.bind(on_complete=self.reset)
         anim.start(self)
 
