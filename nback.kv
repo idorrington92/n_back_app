@@ -29,12 +29,12 @@
         center: self.parent.center
         size: self.parent.size
         on_release:
-            app.printIDs()
+            root.parent.parent.button_press() # Navigate to the game
 
 <NBackGame>:
     FloatLayout:
         Label:
-            text: "Score: 100"
+            text: "Score: " + str(root.score)
             center: upperr.center[0], upperr.pos[1] + upperr.size[1]*1.2
             color: app.theme_cls.primary_color
             size_hint: 1, 1

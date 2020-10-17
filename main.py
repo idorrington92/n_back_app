@@ -3,19 +3,17 @@ from kivy.uix.widget import Widget
 from kivy.clock import Clock
 from numpy.random import randint
 from kivy.animation import Animation
+from kivy.properties import NumericProperty, ObjectProperty, ListProperty
 
 
 from kivy.core.window import Window
 Window.size = (275, 600)
 
 class GameButton(Widget):
-    def __init__(self, **kwargs):
-        super(GameButton, self).__init__(**kwargs)
+    pass
+
 
 class NBackTile(Widget):
-    def __init__(self, **kwargs):
-        super(NBackTile, self).__init__(**kwargs)
-
     def highlight_tile(self):
         anim = Animation(animated_color=MDApp.get_running_app().theme_cls.primary_light, opacity=0.75, duration=.5)
         anim.bind(on_complete=self.reset)
@@ -34,15 +32,19 @@ class GridLine(Widget):
     pass
 
 class NBackGame(Widget):
-    def __init__(self):
-        super().__init__()
-        self.lightstep = 1
-        self.tiles = ['upperl', 'upperm', 'upperr',
-                      'centerl', 'centertile', 'centerr',
-                      'lowerl', 'lowerm', 'lowerr']
+    score = NumericProperty(0)
+    #super(NBackGame, self).__init__()
+    lightstep = NumericProperty(1)
+    tiles = ListProperty(['upperl', 'upperm', 'upperr', 'centerl', 'centertile', 'centerr', 'lowerl', 'lowerm', 'lowerr'])
 
     def printIDs(self):
         print(self.ids)
+
+    def button_press(self):
+        # Was button press correct?
+        # Update score in app
+        self.update_score(100)
+        print(self.score)
 
     def update_grid(self, *args):
         # Add a rectangle
@@ -51,6 +53,10 @@ class NBackGame(Widget):
             self.ids[self.highlight].highlight_tile()
 
         self.lightstep += 1
+
+    def update_score(self, dscore):
+        self.score += dscore
+
 
 
 class NBackApp(MDApp):
