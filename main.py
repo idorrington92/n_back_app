@@ -4,8 +4,9 @@ from kivy.clock import Clock
 from numpy.random import randint
 from random import sample
 from kivy.animation import Animation
-from kivy.properties import NumericProperty, ObjectProperty, ListProperty
-
+from kivy.properties import NumericProperty, ListProperty
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.button import MDFlatButton
 
 from kivy.core.window import Window
 Window.size = (275, 600)
@@ -34,16 +35,25 @@ class GridLine(Widget):
 class NBackGame(Widget):
     # Initialise score
     score = NumericProperty(0)
+
+    # Has the game ended?
+    end = False
+
     # N back
     N = 2
+
     # Time step in game. Tile lights up when a multiple of 3.
     timestep = NumericProperty(0)
+
     # Counts how many times tiles have lit up.
     lightstep = NumericProperty(0)
+
     # Length of round. e.g. 40 iterations at 3 seconds makes a 2 minute round.
     num_iter = N * 12
+
     # Choose 10 indexes to be guarenteed repeats
     rand_doubles = sample(range(N, num_iter-10), 10)
+
     # Create the random order for the tiles
     random_order = []
     for i in range(num_iter):
@@ -60,23 +70,49 @@ class NBackGame(Widget):
         print(self.ids)
 
     def button_press(self):
-        # Was button press correct?
+        # Has button been pressed this turn?
+        # TODO Add check
+
         # Update score in app
         self.update_score(100)
 
-    def update_grid(self, *args):
-        # Add a rectangle
-        if self.lightstep > self.num_iter:
-            # End game
-            pass
+    def end_game_popup(self):
+        self.end = True
+        end_game = MDDialog(title="Level Complete",
+                            text="Score: " + str(self.score),
+                            size_hint=[.8, .8],
+                            md_bg_color=MDApp.get_running_app().theme_cls.primary_color,
+                            buttons=[
+                                MDFlatButton(
+                                    text="Restart", text_color=MDApp.get_running_app().theme_cls.primary_color
+                                ),
+                                MDFlatButton(
+                                    text="Menu", text_color=MDApp.get_running_app().theme_cls.primary_color
+                                )],
+                            auto_dismiss=False,
+                            )
+        end_game.open()
 
-        if self.timestep%3==1:
+    def restart(self, text_of_selection, popup_widget):
+        """
+        Restart the game.
+        """
+        print(text_of_selection)
+        print(popup_widget)
+
+    def update_grid(self, *args):
+        if self.lightstep == self.num_iter-1:
+            # End game
+            self.end_game_popup()
+            MDApp.get_running_app().clock.cancel()
+
+        elif self.timestep%3==1:
             self.lightstep += 1
             self.highlight = self.tiles[self.random_order[self.lightstep]]
             self.ids[self.highlight].highlight_tile()
 
-
         self.timestep += 1
+        print(self.timestep)
 
     def update_score(self, dscore):
         # Check if player was correct/incorrect and increase/decrease their score accordingly.
@@ -89,11 +125,12 @@ class NBackGame(Widget):
 
 
 class NBackApp(MDApp):
+    clock = None
     def build(self):
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Cyan"
         game = NBackGame()
-        Clock.schedule_interval(game.update_grid, 1.)
+        self.clock = Clock.schedule_interval(game.update_grid, 1.)
         return game
 
     def printIDs(self):
