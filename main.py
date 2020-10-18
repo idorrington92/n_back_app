@@ -81,13 +81,14 @@ class NBackGame(Widget):
         end_game = MDDialog(title="Level Complete",
                             text="Score: " + str(self.score),
                             size_hint=[.8, .8],
-                            md_bg_color=MDApp.get_running_app().theme_cls.primary_color,
+                            background_color=MDApp.get_running_app().theme_cls.bg_darkest,
+                            md_bg_color=MDApp.get_running_app().theme_cls.bg_dark,
                             buttons=[
                                 MDFlatButton(
-                                    text="Restart", text_color=MDApp.get_running_app().theme_cls.primary_color
+                                    text="Restart", text_color=MDApp.get_running_app().theme_cls.primary_color,
                                 ),
                                 MDFlatButton(
-                                    text="Menu", text_color=MDApp.get_running_app().theme_cls.primary_color
+                                    text="Menu", text_color=MDApp.get_running_app().theme_cls.primary_color,
                                 )],
                             auto_dismiss=False,
                             )
@@ -112,7 +113,6 @@ class NBackGame(Widget):
             self.ids[self.highlight].highlight_tile()
 
         self.timestep += 1
-        print(self.timestep)
 
     def update_score(self, dscore):
         # Check if player was correct/incorrect and increase/decrease their score accordingly.
