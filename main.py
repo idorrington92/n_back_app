@@ -46,7 +46,7 @@ class NBackGame(Widget):
     timestep = NumericProperty(0)
 
     # Counts how many times tiles have lit up.
-    lightstep = NumericProperty(0)
+    lightstep = NumericProperty(23)
 
     # Length of round. e.g. 40 iterations at 3 seconds makes a 2 minute round.
     num_iter = N * 12
@@ -78,28 +78,35 @@ class NBackGame(Widget):
 
     def end_game_popup(self):
         self.end = True
-        end_game = MDDialog(title="Level Complete",
+        self.end_game = MDDialog(title="Level Complete",
                             text="Score: " + str(self.score),
                             size_hint=[.8, .8],
                             background_color=MDApp.get_running_app().theme_cls.bg_darkest,
                             md_bg_color=MDApp.get_running_app().theme_cls.bg_dark,
                             buttons=[
                                 MDFlatButton(
-                                    text="Restart", text_color=MDApp.get_running_app().theme_cls.primary_color,
+                                    text="Next Level",
+                                    text_color=MDApp.get_running_app().theme_cls.primary_color,
+                                    on_release=self.level_start
                                 ),
                                 MDFlatButton(
                                     text="Menu", text_color=MDApp.get_running_app().theme_cls.primary_color,
                                 )],
                             auto_dismiss=False,
                             )
-        end_game.open()
+        self.end_game.open()
 
-    def restart(self, text_of_selection, popup_widget):
+    def level_start(self, *args):
         """
         Restart the game.
         """
-        print(text_of_selection)
-        print(popup_widget)
+        self.N += 1
+        self.timestep = 0
+        self.lightstep = 0
+        self.end_game.dismiss()
+        MDApp.get_running_app().clock = Clock.schedule_interval(MDApp.get_running_app().game.update_grid, 1.)
+        print("New Level", self.N)
+
 
     def update_grid(self, *args):
         if self.lightstep == self.num_iter-1:
@@ -129,12 +136,14 @@ class NBackApp(MDApp):
     def build(self):
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Cyan"
-        game = NBackGame()
-        self.clock = Clock.schedule_interval(game.update_grid, 1.)
-        return game
+        self.game = NBackGame()
+        self.clock = Clock.schedule_interval(self.game.update_grid, 1.)
+        return self.game
 
     def printIDs(self):
         print(self.root.ids)
+
+
 
 
 NBackApp().run()
