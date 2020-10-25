@@ -11,6 +11,7 @@ from kivymd.uix.button import MDFlatButton
 from kivy.core.window import Window
 Window.size = (275, 600)
 
+
 class GameButton(Widget):
     pass
 
@@ -36,35 +37,37 @@ class NBackGame(Widget):
     # Initialise score
     score = NumericProperty(0)
 
-    # Has the game ended?
-    end = False
+    tiles = ListProperty(['upperl', 'upperm', 'upperr', 'centerl',
+                          'centertile', 'centerr', 'lowerl', 'lowerm',
+                          'lowerr'])
 
     # N back
-    N = 2
+    N = NumericProperty(1)
 
     # Time step in game. Tile lights up when a multiple of 3.
     timestep = NumericProperty(0)
 
     # Counts how many times tiles have lit up.
-    lightstep = NumericProperty(23)
+    lightstep = NumericProperty(21)
 
-    # Length of round. e.g. 40 iterations at 3 seconds makes a 2 minute round.
-    num_iter = N * 12
+    def on_start(self):
+        # Length of round. e.g. 40 iterations at 3 seconds makes a 2 minute round.
+        self.num_iter = self.N * 12
 
-    # Choose 10 indexes to be guarenteed repeats
-    rand_doubles = sample(range(N, num_iter-10), 10)
+        # Choose 10 indexes to be guarenteed repeats
+        rand_doubles = sample(range(self.N, self.num_iter-10), 10)
 
-    # Create the random order for the tiles
-    random_order = []
-    for i in range(num_iter):
-        if i in rand_doubles:
-            random_order.append(random_order[-N])
-        else:
-            random_order.append(randint(9))
+        # Create the random order for the tiles
+        random_order = []
+        for i in range(self.num_iter):
+            if i in rand_doubles:
+                random_order.append(random_order[-self.N])
+            else:
+                random_order.append(randint(9))
+        self.random_order = random_order
 
-    tiles = ListProperty(['upperl', 'upperm', 'upperr', 'centerl',
-                          'centertile', 'centerr', 'lowerl', 'lowerm',
-                          'lowerr'])
+        self.clock = Clock.schedule_interval(self.update_grid, 1.)
+
 
     def printIDs(self):
         print(self.ids)
@@ -104,7 +107,7 @@ class NBackGame(Widget):
         self.timestep = 0
         self.lightstep = 0
         self.end_game.dismiss()
-        MDApp.get_running_app().clock = Clock.schedule_interval(MDApp.get_running_app().game.update_grid, 1.)
+        self.on_start()
         print("New Level", self.N)
 
 
@@ -112,7 +115,7 @@ class NBackGame(Widget):
         if self.lightstep == self.num_iter-1:
             # End game
             self.end_game_popup()
-            MDApp.get_running_app().clock.cancel()
+            self.clock.cancel()
 
         elif self.timestep%3==1:
             self.lightstep += 1
@@ -132,12 +135,11 @@ class NBackGame(Widget):
 
 
 class NBackApp(MDApp):
-    clock = None
     def build(self):
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Cyan"
         self.game = NBackGame()
-        self.clock = Clock.schedule_interval(self.game.update_grid, 1.)
+        self.game.end_game_popup()
         return self.game
 
     def printIDs(self):

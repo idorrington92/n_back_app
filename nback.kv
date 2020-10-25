@@ -39,6 +39,12 @@
             color: app.theme_cls.primary_color
             size_hint: 1, 1
 
+        Label:
+            text: str(root.N) + "-Back"
+            center: upperl.center[0], upperl.pos[1] + upperl.size[1]*1.2
+            color: app.theme_cls.primary_color
+            size_hint: 1, 1
+
         GameButton:
             text: "Position"
             center: lowerl.center[0], lowerl.pos[1] /2
