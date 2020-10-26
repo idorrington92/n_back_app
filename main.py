@@ -79,9 +79,27 @@ class NBackGame(Widget):
         # Update score in app
         self.update_score(100)
 
+    def start_game_popup(self):
+        self.popup = MDDialog(title="N-Back to the Future",
+                            text="Score: " + str(self.score),
+                            size_hint=[.8, .8],
+                            #background_color=MDApp.get_running_app().theme_cls.bg_darkest,
+                            md_bg_color=MDApp.get_running_app().theme_cls.bg_dark,
+                            buttons=[
+                                MDFlatButton(
+                                    text="Start Game",
+                                    text_color=MDApp.get_running_app().theme_cls.primary_color,
+                                    on_release=self.level_start
+                                ),
+                                MDFlatButton(
+                                    text="Menu", text_color=MDApp.get_running_app().theme_cls.primary_color,
+                                )],
+                            auto_dismiss=False,
+                            )
+        self.popup.open()
+
     def end_game_popup(self):
-        self.end = True
-        self.end_game = MDDialog(title="Level Complete",
+        self.popup = MDDialog(title="Level Complete",
                             text="Score: " + str(self.score),
                             size_hint=[.8, .8],
                             background_color=MDApp.get_running_app().theme_cls.bg_darkest,
@@ -97,7 +115,7 @@ class NBackGame(Widget):
                                 )],
                             auto_dismiss=False,
                             )
-        self.end_game.open()
+        self.popup.open()
 
     def level_start(self, *args):
         """
@@ -106,7 +124,7 @@ class NBackGame(Widget):
         self.N += 1
         self.timestep = 0
         self.lightstep = 0
-        self.end_game.dismiss()
+        self.popup.dismiss()
         self.on_start()
         print("New Level", self.N)
 
@@ -139,7 +157,7 @@ class NBackApp(MDApp):
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Cyan"
         self.game = NBackGame()
-        self.game.end_game_popup()
+        self.game.start_game_popup()
         return self.game
 
     def printIDs(self):
