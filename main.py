@@ -73,13 +73,14 @@ class NBackGame(Widget):
         print(self.ids)
 
     def button_press(self):
-        # Has button been pressed this turn?
-        # TODO Add check
-
         # Update score in app
         self.update_score(100)
 
     def start_game_popup(self):
+        # Disable game buttons until after first tile lights up
+        self.clicked = True
+
+        # Define start game pop up
         self.popup = MDDialog(title="N-Back to the Future",
                             text="Score: " + str(self.score),
                             size_hint=[.8, .8],
@@ -96,6 +97,8 @@ class NBackGame(Widget):
                                 )],
                             auto_dismiss=False,
                             )
+
+        # Open pop up
         self.popup.open()
 
     def end_game_popup(self):
@@ -125,6 +128,7 @@ class NBackGame(Widget):
         self.timestep = 0
         self.lightstep = 0
         self.popup.dismiss()
+
         self.on_start()
         print("New Level", self.N)
 
@@ -136,6 +140,7 @@ class NBackGame(Widget):
             self.clock.cancel()
 
         elif self.timestep%3==1:
+            self.clicked = False
             self.lightstep += 1
             self.highlight = self.tiles[self.random_order[self.lightstep]]
             self.ids[self.highlight].highlight_tile()
@@ -144,10 +149,12 @@ class NBackGame(Widget):
 
     def update_score(self, dscore):
         # Check if player was correct/incorrect and increase/decrease their score accordingly.
-        if self.random_order[self.lightstep] == self.random_order[self.lightstep - self.N] and self.N < self.lightstep:
-            self.score += dscore
-        else:
-            self.score -= dscore
+        if self.clicked == False:
+            if self.random_order[self.lightstep] == self.random_order[self.lightstep - self.N] and self.N < self.lightstep:
+                self.score += dscore
+            else:
+                self.score -= dscore
+        self.clicked = True
 
 
 
