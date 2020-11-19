@@ -7,8 +7,12 @@ from kivy.animation import Animation
 from kivy.properties import NumericProperty, ListProperty
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
-
 from kivy.core.window import Window
+#import os
+#os.environ['KIVY_AUDIO'] = 'sdl2'
+from kivy.core.audio import SoundLoader
+
+
 Window.size = (275, 600)
 
 
@@ -143,6 +147,7 @@ class NBackGame(Widget):
             self.clicked = False
             self.lightstep += 1
             self.highlight = self.tiles[self.random_order[self.lightstep]]
+            self.play_sound()
             self.ids[self.highlight].highlight_tile()
 
         self.timestep += 1
@@ -155,6 +160,11 @@ class NBackGame(Widget):
             else:
                 self.score -= dscore
         self.clicked = True
+
+    def play_sound(self):
+        sound = SoundLoader.load('p.wav')
+        sound.play()
+        print(sound)
 
 
 
